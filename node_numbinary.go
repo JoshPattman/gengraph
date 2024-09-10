@@ -18,27 +18,31 @@ type NumBinaryNode[T Numerical] struct {
 	op        numBinaryOp
 }
 
-func NumAdd[T Numerical](g *Graph, left *Buffer[T], right *Buffer[T]) *NumBinaryNode[T] {
-	return numBinary(g, left, right, nbAdd)
+func NumAdd[T Numerical](left BufferGetter[T], right BufferGetter[T]) *NumBinaryNode[T] {
+	return numBinary(left, right, nbAdd)
 }
 
-func NumSub[T Numerical](g *Graph, left *Buffer[T], right *Buffer[T]) *NumBinaryNode[T] {
-	return numBinary(g, left, right, nbSub)
+func NumSub[T Numerical](left BufferGetter[T], right BufferGetter[T]) *NumBinaryNode[T] {
+	return numBinary(left, right, nbSub)
 }
 
-func NumMul[T Numerical](g *Graph, left *Buffer[T], right *Buffer[T]) *NumBinaryNode[T] {
-	return numBinary(g, left, right, nbMul)
+func NumMul[T Numerical](left BufferGetter[T], right BufferGetter[T]) *NumBinaryNode[T] {
+	return numBinary(left, right, nbMul)
 }
 
-func NumDiv[T Numerical](g *Graph, left *Buffer[T], right *Buffer[T]) *NumBinaryNode[T] {
-	return numBinary(g, left, right, nbDiv)
+func NumDiv[T Numerical](left BufferGetter[T], right BufferGetter[T]) *NumBinaryNode[T] {
+	return numBinary(left, right, nbDiv)
 }
 
-func numBinary[T Numerical](g *Graph, left *Buffer[T], right *Buffer[T], op numBinaryOp) *NumBinaryNode[T] {
+func numBinary[T Numerical](left BufferGetter[T], right BufferGetter[T], op numBinaryOp) *NumBinaryNode[T] {
+	g := left.Buf().OnGraph
+	if g != right.Buf().OnGraph {
+		panic("input buffers must be on the same graph")
+	}
 	n := &NumBinaryNode[T]{
-		fromLeft:  left,
-		fromRight: right,
-		to:        &Buffer[T]{Name: randStringName()},
+		fromLeft:  left.Buf(),
+		fromRight: right.Buf(),
+		to:        &Buffer[T]{Name: randStringName(), OnGraph: g},
 		op:        op,
 	}
 	g.Add(n)

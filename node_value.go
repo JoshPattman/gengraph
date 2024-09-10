@@ -11,13 +11,13 @@ type Value[T any] struct {
 }
 
 func Variable[T any](g *Graph, name string) *Value[T] {
-	v := &Value[T]{Var: &Buffer[T]{Name: name}}
+	v := &Value[T]{Var: &Buffer[T]{Name: name, OnGraph: g}}
 	g.Add(v)
 	return v
 }
 
 func Constant[T any](g *Graph, val T) *Value[T] {
-	v := &Value[T]{Var: &Buffer[T]{Name: randStringName()}, isConst: true, constVal: val}
+	v := &Value[T]{Var: &Buffer[T]{Name: randStringName(), OnGraph: g}, isConst: true, constVal: val}
 	g.Add(v)
 	return v
 }

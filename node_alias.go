@@ -7,8 +7,9 @@ type AliasNode[T any] struct {
 	To   *Buffer[T]
 }
 
-func Alias[T any](g *Graph, from *Buffer[T], name string) *AliasNode[T] {
-	n := &AliasNode[T]{From: from, To: &Buffer[T]{Name: name}}
+func Alias[T any](from BufferGetter[T], name string) *AliasNode[T] {
+	g := from.Buf().OnGraph
+	n := &AliasNode[T]{From: from.Buf(), To: &Buffer[T]{Name: name, OnGraph: g}}
 	g.Add(n)
 	return n
 }

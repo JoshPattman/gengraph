@@ -16,18 +16,19 @@ type NumUnaryNode[T Numerical] struct {
 	op   numUnaryOp
 }
 
-func NumSin[T Numerical](g *Graph, in *Buffer[T]) *NumUnaryNode[T] {
-	return numUnary(g, in, nuSin)
+func NumSin[T Numerical](in BufferGetter[T]) *NumUnaryNode[T] {
+	return numUnary(in, nuSin)
 }
 
-func NumCos[T Numerical](g *Graph, in *Buffer[T]) *NumUnaryNode[T] {
-	return numUnary(g, in, nuCos)
+func NumCos[T Numerical](in BufferGetter[T]) *NumUnaryNode[T] {
+	return numUnary(in, nuCos)
 }
 
-func numUnary[T Numerical](g *Graph, in *Buffer[T], op numUnaryOp) *NumUnaryNode[T] {
+func numUnary[T Numerical](in BufferGetter[T], op numUnaryOp) *NumUnaryNode[T] {
+	g := in.Buf().OnGraph
 	n := &NumUnaryNode[T]{
-		from: in,
-		to:   &Buffer[T]{Name: randStringName()},
+		from: in.Buf(),
+		to:   &Buffer[T]{Name: randStringName(), OnGraph: g},
 		op:   op,
 	}
 	g.Add(n)

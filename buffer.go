@@ -2,8 +2,13 @@ package gengraph
 
 import "fmt"
 
+type BufferGetter[T any] interface {
+	Buf() *Buffer[T]
+}
+
 type Buffer[T any] struct {
-	Name string
+	Name    string
+	OnGraph *Graph
 }
 
 func (v *Buffer[T]) BufferDef() string {
@@ -20,4 +25,8 @@ func (v *Buffer[T]) UseString() string {
 
 func (v *Buffer[T]) GradUseString() string {
 	return "g." + v.Name + "Grad"
+}
+
+func (v *Buffer[T]) Buf() *Buffer[T] {
+	return v
 }
