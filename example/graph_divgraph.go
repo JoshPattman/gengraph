@@ -1,5 +1,3 @@
-//go:build !graph
-
 package main
 
 import (
@@ -16,26 +14,26 @@ type DivGraph struct {
 	AGrad float64
 	B float64
 	BGrad float64
-	_iwndnzofj float64
-	_iwndnzofjGrad float64
+	_evwshoipg float64
+	_evwshoipgGrad float64
 	Y float64
 	YGrad float64
 }
 
 func (g *DivGraph) ClearGrads() {
 	g.YGrad = 0
-	g._iwndnzofjGrad = 0
+	g._evwshoipgGrad = 0
 	g.BGrad = 0
 	g.AGrad = 0
 }
 
 func (g *DivGraph) Forward() {
-	g._iwndnzofj = g.A / g.B
-	g.Y = g._iwndnzofj
+	g._evwshoipg = g.A / g.B
+	g.Y = g._evwshoipg
 }
 
 func (g *DivGraph) Backward() {
-	g._iwndnzofjGrad += g.YGrad
-	g.AGrad += g._iwndnzofjGrad * 1.0 / g.B
-	g.BGrad += g._iwndnzofjGrad * -g.A / (g.B * g.B)
+	g._evwshoipgGrad += g.YGrad
+	g.AGrad += g._evwshoipgGrad * 1.0 / g.B
+	g.BGrad += g._evwshoipgGrad * -g.A / (g.B * g.B)
 }

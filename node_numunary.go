@@ -25,6 +25,7 @@ func NumCos[T Numerical](in BufferGetter[T]) *NumUnaryNode[T] {
 }
 
 func numUnary[T Numerical](in BufferGetter[T], op numUnaryOp) *NumUnaryNode[T] {
+	in.Buf().AssertScalarShape()
 	g := in.Buf().OnGraph
 	n := &NumUnaryNode[T]{
 		from: in.Buf(),
