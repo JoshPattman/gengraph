@@ -9,7 +9,7 @@ type BufferGetter[T any] interface {
 type Buffer[T any] struct {
 	Name    string
 	OnGraph *Graph
-	Shape   []int
+	Shape   Shape
 }
 
 func (v *Buffer[T]) BufferDef() string {
@@ -30,14 +30,4 @@ func (v *Buffer[T]) GradUseString() string {
 
 func (v *Buffer[T]) Buf() *Buffer[T] {
 	return v
-}
-
-func (v *Buffer[T]) NumDims() int {
-	return len(v.Shape)
-}
-
-func (v *Buffer[T]) AssertScalarShape() {
-	if v.NumDims() != 0 {
-		panic(fmt.Sprintf("Expected scalar shape (either nil or {}) but got %v", v.Shape))
-	}
 }

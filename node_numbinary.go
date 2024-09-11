@@ -35,8 +35,8 @@ func NumDiv[T Numerical](left BufferGetter[T], right BufferGetter[T]) *NumBinary
 }
 
 func numBinary[T Numerical](left BufferGetter[T], right BufferGetter[T], op numBinaryOp) *NumBinaryNode[T] {
-	left.Buf().AssertScalarShape()
-	right.Buf().AssertScalarShape()
+	left.Buf().Shape.AssertScalar()
+	right.Buf().Shape.AssertScalar()
 	g := left.Buf().OnGraph
 	if g != right.Buf().OnGraph {
 		panic("input buffers must be on the same graph")
